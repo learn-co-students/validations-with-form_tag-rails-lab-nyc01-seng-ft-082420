@@ -9,10 +9,31 @@ class PostsController < ApplicationController
 
   def update
     @post = Post.find(params[:id])
+    if @post.is_valid?
+      @post.update(post_params)
+      redirect_to post_path(@post)
+    else
+      @errors = @post.errors.full_messages
+      redirect_to edit_post_path(@post)
+    end
+  end
 
-    @post.update(post_params)
+  def new
+    @post = Post.find(params[:id])
+  
+  end
 
-    redirect_to post_path(@post)
+  def create
+    @post = Post.create(post_params)
+
+    if @post.is_valid?
+      redirect_to post_path(@post)
+    else
+      @errors = @post.errors.full_messages
+      redirect_to new_post_path(@post)
+    end
+      
+  
   end
 
   private
