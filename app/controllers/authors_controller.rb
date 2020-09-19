@@ -9,8 +9,13 @@ class AuthorsController < ApplicationController
 
   def create
     @author = Author.create(author_params)
-
-    redirect_to author_path(@author)
+    if @author.valid?
+      redirect_to author_path(@author)
+    else
+      # flash[:errors] = @author.errors.full_messages
+      # redirect_to new_author_path(@author)
+      render :new
+    end
   end
 
   private
@@ -19,3 +24,4 @@ class AuthorsController < ApplicationController
     params.permit(:name, :email, :phone_number)
   end
 end
+
